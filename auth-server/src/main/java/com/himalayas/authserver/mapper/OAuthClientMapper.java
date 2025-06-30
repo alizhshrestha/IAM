@@ -29,18 +29,18 @@ public class OAuthClientMapper {
                       .forEach(authMethods::add);
             })
             .authorizationGrantTypes(grantTypes -> {
-              Arrays.stream(entity.getClientAuthenticationMethods().split(","))
+              Arrays.stream(entity.getAuthorizationGrantTypes().split(","))
                       .map(String::trim)
                       .map(AuthorizationGrantType::new)
                       .forEach(grantTypes::add);
             })
             .redirectUris(uris -> {
-              Arrays.stream(entity.getClientAuthenticationMethods().split(","))
+              Arrays.stream(entity.getRedirectUris().split(","))
                       .map(String::trim)
                       .forEach(uris::add);
             })
             .scopes(scopes -> {
-              Arrays.stream(entity.getClientAuthenticationMethods().split(","))
+              Arrays.stream(entity.getScopes().split(","))
                       .map(String::trim)
                       .forEach(scopes::add);
             })
