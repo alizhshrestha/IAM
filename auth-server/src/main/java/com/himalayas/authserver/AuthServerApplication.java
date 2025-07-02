@@ -20,7 +20,7 @@ public class AuthServerApplication {
 		SpringApplication.run(AuthServerApplication.class, args);
 	}
 
-	/*@Bean
+	@Bean
 	public CommandLineRunner initData(TenantRepository tenantRepository,
 									  AppUserRepository appUserRepository,
 									  PasswordEncoder passwordEncoder){
@@ -53,5 +53,5 @@ public class AuthServerApplication {
 
 			System.out.println("Initial tenant and user data populated successfully!");
 		};
-	}*/
+	}
 }
