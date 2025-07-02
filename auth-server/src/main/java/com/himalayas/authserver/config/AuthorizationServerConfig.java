@@ -1,6 +1,8 @@
 package com.himalayas.authserver.config;
 
 import com.himalayas.authserver.filter.TenantFilter;
+import com.himalayas.authserver.mapper.TenantAwareRegisteredClientMapper;
+import com.himalayas.authserver.repository.TenantAwareRegisteredClientRepository;
 import com.himalayas.authserver.service.TenantAwareUserDetailsService;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -8,7 +10,6 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.parser.TE;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -19,24 +20,17 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 import java.security.KeyPair;
@@ -60,6 +54,7 @@ public class AuthorizationServerConfig {
             OAuth2AuthorizationServerConfigurer.authorizationServer();
 
     http
+            .addFilterBefore(tenantFilter, SecurityContextHolderFilter.class)
             .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
             .with(authorizationServerConfigurer, (authorizationServer) ->
                     authorizationServer
@@ -93,17 +88,16 @@ public class AuthorizationServerConfig {
   @Order(2)
   public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     http
-            .authorizeHttpRequests(authorize ->
-                    authorize
-                            .anyRequest().authenticated()
+            .addFilterBefore(tenantFilter, SecurityContextHolderFilter.class) // <== important!
+            .authorizeHttpRequests(auth -> auth
+                    .anyRequest().authenticated()
             )
-            .addFilterBefore(tenantFilter, UsernamePasswordAuthenticationFilter.class)
             .formLogin(Customizer.withDefaults());
 
     return http.build();
   }
 
-  @Bean
+  /*@Bean
   public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder){
     RegisteredClient registeredClient1 = RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId("client")
@@ -129,11 +123,11 @@ public class AuthorizationServerConfig {
 
     return new InMemoryRegisteredClientRepository(registeredClient1, registeredClient2);
 
-  }
+  }*/
 
   @Bean
   public AuthenticationManager authenticationManager() {
-    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(userDetailsService());
+    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(tenantAwareUserDetailsService);
     authenticationProvider.setPasswordEncoder(passwordEncoder());
     return new ProviderManager(authenticationProvider);
   }
@@ -143,10 +137,10 @@ public class AuthorizationServerConfig {
     return new BCryptPasswordEncoder();
   }
 
-  @Bean
-  public UserDetailsService userDetailsService() {
-    return tenantAwareUserDetailsService;
-  }
+//  @Bean
+//  public UserDetailsService userDetailsService() {
+//    return tenantAwareUserDetailsService;
+//  }
 
   @Bean
   public JWKSource<SecurityContext> jwkSource() {
@@ -167,8 +161,7 @@ public class AuthorizationServerConfig {
       KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
       keyPairGenerator.initialize(2048);
       keyPair = keyPairGenerator.generateKeyPair();
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       throw new IllegalStateException(ex);
     }
     return keyPair;
@@ -184,5 +177,12 @@ public class AuthorizationServerConfig {
     return AuthorizationServerSettings.builder()
             .issuer("http://localhost:9000")
             .build();
+  }
+
+  @Bean
+  public RegisteredClientRepository registeredClientRepository(
+          TenantAwareRegisteredClientMapper mapper) {
+    System.out.println("✅ Using custom TenantAwareRegisteredClientRepository");
+    return new TenantAwareRegisteredClientRepository(mapper);
   }
 }
