@@ -26,10 +26,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
@@ -45,6 +43,14 @@ import java.util.UUID;
 public class AuthorizationServerConfig {
   private final TenantAwareUserDetailsService tenantAwareUserDetailsService;
   private final TenantFilter tenantFilter;
+  private final String[] allowedOrigin = {
+          "/oauth2/token",
+          "/.well-known/**",
+          "/oauth2/jwks",
+          "/login",
+          "/default-ui.css",
+          "/favicon.ico "
+  };
 
   @Bean
   @Order(1)
@@ -54,6 +60,7 @@ public class AuthorizationServerConfig {
             OAuth2AuthorizationServerConfigurer.authorizationServer();
 
     http
+            .cors(Customizer.withDefaults())
             .addFilterBefore(tenantFilter, SecurityContextHolderFilter.class)
             .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
             .with(authorizationServerConfigurer, (authorizationServer) ->
@@ -62,7 +69,7 @@ public class AuthorizationServerConfig {
             )
             .authorizeHttpRequests((authorize) ->
                     authorize
-                            .requestMatchers("/favicon.ico").permitAll()
+                            .requestMatchers(allowedOrigin).permitAll()
                             .anyRequest().authenticated()
             )
             // Redirect to the login page when not authenticated from the
@@ -89,9 +96,10 @@ public class AuthorizationServerConfig {
   @Order(2)
   public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     http
+            .cors(Customizer.withDefaults())
             .addFilterBefore(tenantFilter, SecurityContextHolderFilter.class) // <== important!
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/favicon.ico").permitAll()
+                    .requestMatchers(allowedOrigin).permitAll()
                     .anyRequest().authenticated()
             )
             .formLogin(Customizer.withDefaults());
@@ -172,13 +180,6 @@ public class AuthorizationServerConfig {
   @Bean
   public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
     return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
-  }
-
-  @Bean
-  public AuthorizationServerSettings authorizationServerSettings() {
-    return AuthorizationServerSettings.builder()
-            .issuer("http://localhost:9000")
-            .build();
   }
 
   @Bean

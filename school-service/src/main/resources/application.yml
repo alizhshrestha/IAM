@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: school-service
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://tenant1.auth.example.com:9000

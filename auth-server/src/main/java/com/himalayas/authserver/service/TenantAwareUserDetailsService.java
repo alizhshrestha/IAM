@@ -2,6 +2,7 @@ package com.himalayas.authserver.service;
 
 import com.himalayas.authserver.context.TenantContext;
 import com.himalayas.authserver.entity.AppUser;
+import com.himalayas.authserver.entity.CustomUserDetails;
 import com.himalayas.authserver.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,16 +30,13 @@ public class TenantAwareUserDetailsService implements UserDetailsService {
 
     AppUser appUser = appUserRepository.findByUsernameAndTenantId(username, tenantId)
             .orElseThrow(() ->
-               new UsernameNotFoundException("User not found for tenant '" + tenantId + "': " + username));
+                    new UsernameNotFoundException("User not found for tenant '" + tenantId + "': " + username));
+
     List<SimpleGrantedAuthority> authorities = appUser.getRoles().stream()
             .map(SimpleGrantedAuthority::new)
             .toList();
-    return new User(
-            appUser.getUsername(),
-            appUser.getPassword(),
-            appUser.isEnabled(),
-            true, true, true,
-            authorities
-    );
+
+    return new CustomUserDetails(appUser, authorities);
   }
 }
+

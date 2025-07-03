@@ -9,8 +9,10 @@ import com.himalayas.authserver.dto.RegisteredClientDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +78,11 @@ public class RegisteredClientConverter {
             .redirectUris(uris -> Arrays.stream(dto.getRedirectUris().split(",")).forEach(uris::add))
             .scopes(s -> Arrays.stream(dto.getScopes().split(",")).forEach(s::add))
             .clientSettings(ClientSettings.withSettings(flattenedClientMap).build())
-            .tokenSettings(TokenSettings.withSettings(flattenedTokenMap).build())
+            .tokenSettings(TokenSettings.withSettings(flattenedTokenMap)
+                    .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+                    .accessTokenTimeToLive(Duration.ofMinutes(30))
+                    .idTokenSignatureAlgorithm(SignatureAlgorithm.RS256)
+                    .build())
             .build();
   }
 
