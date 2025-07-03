@@ -62,6 +62,7 @@ public class AuthorizationServerConfig {
             )
             .authorizeHttpRequests((authorize) ->
                     authorize
+                            .requestMatchers("/favicon.ico").permitAll()
                             .anyRequest().authenticated()
             )
             // Redirect to the login page when not authenticated from the
@@ -90,6 +91,7 @@ public class AuthorizationServerConfig {
     http
             .addFilterBefore(tenantFilter, SecurityContextHolderFilter.class) // <== important!
             .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/favicon.ico").permitAll()
                     .anyRequest().authenticated()
             )
             .formLogin(Customizer.withDefaults());
