@@ -1,6 +1,7 @@
 package com.himalayas.authserver;
 
 import com.himalayas.authserver.context.TenantContext;
+import com.himalayas.authserver.converter.RegisteredClientConverter;
 import com.himalayas.authserver.dto.RegisteredClientDto;
 import com.himalayas.authserver.entity.AppUser;
 import com.himalayas.authserver.entity.Tenant;
@@ -67,12 +68,12 @@ public class AuthServerApplication {
 		};
 	}*/
 
-	/*@Bean
+	@Bean
 	public CommandLineRunner initPKCEClient(TenantAwareRegisteredClientMapper mapper){
 		return args -> {
 			TenantContext.setCurrentTenant("tenant1");
 
-			RegisteredClientDto dto = RegisteredClientDto.from(
+			RegisteredClientDto dto = RegisteredClientConverter.from(
 							RegisteredClient.withId(UUID.randomUUID().toString())
 											.clientId("spa-client")
 											.clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
@@ -88,11 +89,11 @@ public class AuthServerApplication {
 															.accessTokenTimeToLive(Duration.ofMinutes(30))
 															.build())
 											.build(),
-							"tenant1"
+							"tenant2"
 
 			);
 			mapper.save(dto);
 			TenantContext.clear();
 		};
-	}*/
+	}
 }
