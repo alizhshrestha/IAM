@@ -28,6 +28,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
@@ -102,7 +103,9 @@ public class AuthorizationServerConfig {
                     .requestMatchers(allowedOrigin).permitAll()
                     .anyRequest().authenticated()
             )
-            .formLogin(Customizer.withDefaults());
+            .formLogin(form -> form.successHandler(
+                    new SavedRequestAwareAuthenticationSuccessHandler()
+            ));
 
     return http.build();
   }
