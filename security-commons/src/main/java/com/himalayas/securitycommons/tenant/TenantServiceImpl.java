@@ -20,7 +20,7 @@ public class TenantServiceImpl implements TenantService{
   }
 
   @Override
-  @Cacheable("tenants")
+  @Cacheable(value = "tenants", key = "#issuer")
   public Optional<Tenant> findByIssuer(String issuer) {
     try{
       String host = new URI(issuer).getHost();

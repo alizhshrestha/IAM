@@ -1,5 +1,7 @@
 package com.himalayas.schoolservice.config;
 
+import com.himalayas.schoolservice.context.UserContextCleanupFilter;
+import com.himalayas.securitycommons.config.CustomJwtAuthenticationConverter;
 import com.himalayas.securitycommons.tenant.JwtTenantValidator;
 import com.himalayas.securitycommons.tenant.Tenant;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 
 import java.text.ParseException;
 
@@ -24,7 +27,7 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain filterChain(HttpSecurity http, CustomJwtAuthenticationConverter customJwtAuthenticationConverter, UserContextCleanupFilter userContextCleanupFilter) throws Exception {
     http
 //            .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
@@ -34,8 +37,10 @@ public class SecurityConfig {
             .oauth2ResourceServer(oauth2 -> oauth2
                     .jwt(jwt -> jwt
                             .decoder(jwtDecoder(jwtTenantValidator))
+                            .jwtAuthenticationConverter(customJwtAuthenticationConverter)
                     )
-            );
+            )
+            .addFilterAfter(userContextCleanupFilter, SecurityContextHolderFilter.class);
 
     return http.build();
   }
@@ -51,7 +56,6 @@ public class SecurityConfig {
       try {
         Tenant tenant = tenantValidator.resolveTenant(token);
         String issuerUri = "http://" + tenant.getDomain() + ":9000";
-
         return JwtDecoders.fromIssuerLocation(issuerUri).decode(token);
       } catch (ParseException e) {
         throw new RuntimeException(e);

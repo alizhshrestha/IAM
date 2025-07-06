@@ -18,8 +18,10 @@ public class JwtTenantValidator {
     JWTClaimsSet claims = jwt.getJWTClaimsSet();
     String issuer = claims.getIssuer();
 
-    return tenantService.findByIssuer(issuer)
+    Tenant tenant = tenantService.findByIssuer(issuer)
             .orElseThrow(() -> new IllegalArgumentException("Invalid issuer: " + issuer));
+    TenantContextHolder.setTenant(tenant);
+    return tenant;
   }
 
 }
