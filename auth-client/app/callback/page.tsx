@@ -56,7 +56,7 @@ export default function CallbackPage() {
                 sessionStorage.setItem('access_token', data.access_token);
                 sessionStorage.setItem('id_token', data.id_token || '');
 
-                // router.push('/dashboard');
+                router.push('/dashboard');
             } catch (err: any) {
                 setError(err.message);
             }

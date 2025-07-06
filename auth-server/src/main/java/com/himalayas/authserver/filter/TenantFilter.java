@@ -1,8 +1,8 @@
 package com.himalayas.authserver.filter;
 
 import com.himalayas.authserver.context.TenantContext;
-import com.himalayas.authserver.entity.Tenant;
-import com.himalayas.authserver.repository.TenantRepository;
+import com.himalayas.securitycommons.tenant.Tenant;
+import com.himalayas.securitycommons.tenant.TenantRepository;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

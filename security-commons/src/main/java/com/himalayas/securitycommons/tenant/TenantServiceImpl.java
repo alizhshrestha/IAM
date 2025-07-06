@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,11 @@ public class TenantServiceImpl implements TenantService{
     }catch (Exception e) {
       return Optional.empty();
     }
+  }
+
+  @Override
+  public Optional<List<Tenant>> findAll(){
+    return Optional.of(tenantRepository.findAll());
   }
 
 

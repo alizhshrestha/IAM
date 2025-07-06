@@ -1,14 +1,29 @@
 'use client'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false);
+    const [tenants, setTenants] = useState<string[]>([]);
+    const [selectedTenant, setSelectedTenant] = useState<string>("");
+
+    useEffect(()=>{
+        fetch('http://tenant1.auth.example.com:9000/public/api/tenants')
+        .then((res) => res.json())
+        .then(setTenants)
+        .catch((err) => console.error("Failed to fetch tenants", err));
+    },[]);
 
     const handleLogin = async () => {
+
+        if(!selectedTenant){
+            alert('Please select a tenant');
+            return;
+        }
+
         setIsLoading(true);
 
-        const tenant = 'tenant1'; // later, dynamically from subdomain or input
+        const tenant = selectedTenant;
         const clientId = process.env.NEXT_PUBLIC_CLIENT_ID!;
         const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI!;
         const authBaseUrl = `http://${tenant}.auth.example.com:9000/oauth2/authorize`;
@@ -21,6 +36,7 @@ export default function LoginPage() {
         sessionStorage.setItem('pkce_code_verifier', codeVerifier);
         sessionStorage.setItem('oauth_state', csrfToken);
         sessionStorage.setItem('tenant', tenant);
+        console.log(`Tenant is: ${tenant}`)
 
         const url = new URL(authBaseUrl);
         url.searchParams.set('response_type', 'code');
@@ -35,13 +51,28 @@ export default function LoginPage() {
     };
 
     return (
-        <main className="flex h-screen items-center justify-center bg-gray-100">
+        <main className="flex flex-col h-screen gap-4 items-center justify-center bg-gray-100">
+            <div>
+                <label className="block mb-1 font-medium">Select Tenant</label>
+                <select
+                    className="px-4 py-2 rounded border border-gray-300 text-black"
+                    value={selectedTenant}
+                    onChange={(e) => setSelectedTenant(e.target.value)}
+                >
+                    <option value="">-- Choose Tenant --</option>
+                    {tenants.map((tenant) => (
+                        <option key={tenant} value={tenant}>
+                            {tenant}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <button
                 onClick={handleLogin}
                 className="px-6 py-3 bg-green-500 text-white rounded-md shadow-md hover:bg-green-700 transition"
-                disabled={isLoading}
+                disabled={isLoading || !selectedTenant}
             >
-                {isLoading ? 'Redirecting...' : 'Login with Tenant1'}
+                {isLoading ? 'Redirecting...' : `Login with ${selectedTenant}`}
             </button>
         </main>
     )

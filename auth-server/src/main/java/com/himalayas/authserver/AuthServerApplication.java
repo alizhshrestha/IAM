@@ -3,17 +3,12 @@ package com.himalayas.authserver;
 import com.himalayas.authserver.context.TenantContext;
 import com.himalayas.authserver.converter.RegisteredClientConverter;
 import com.himalayas.authserver.dto.RegisteredClientDto;
-import com.himalayas.authserver.entity.AppUser;
-import com.himalayas.authserver.entity.Tenant;
 import com.himalayas.authserver.mapper.TenantAwareRegisteredClientMapper;
-import com.himalayas.authserver.repository.AppUserRepository;
-import com.himalayas.authserver.repository.TenantRepository;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -22,16 +17,19 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Duration;
-import java.util.Set;
 import java.util.UUID;
 
-@SpringBootApplication
+@SpringBootApplication(
+        scanBasePackages = {
+                "com.himalayas.authserver",
+                "com.himalayas.securitycommons"
+        })
 @MapperScan("com.himalayas.authserver.mapper")
 public class AuthServerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AuthServerApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(AuthServerApplication.class, args);
+  }
 
 	/*@Bean
 	public CommandLineRunner initData(TenantRepository tenantRepository,
@@ -68,32 +66,32 @@ public class AuthServerApplication {
 		};
 	}*/
 
-	@Bean
-	public CommandLineRunner initPKCEClient(TenantAwareRegisteredClientMapper mapper){
-		return args -> {
-			TenantContext.setCurrentTenant("tenant1");
+  /*@Bean
+  public CommandLineRunner initPKCEClient(TenantAwareRegisteredClientMapper mapper) {
+    return args -> {
+      TenantContext.setCurrentTenant("tenant1");
 
-			RegisteredClientDto dto = RegisteredClientConverter.from(
-							RegisteredClient.withId(UUID.randomUUID().toString())
-											.clientId("spa-client")
-											.clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
-											.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-											.redirectUris((uri) -> uri.add("http://localhost:3000/callback"))
-											.scope(OidcScopes.OPENID)
-											.scope("profile")
-											.clientSettings(ClientSettings.builder()
-															.requireProofKey(true)
-															.requireAuthorizationConsent(true)
-															.build())
-											.tokenSettings(TokenSettings.builder()
-															.accessTokenTimeToLive(Duration.ofMinutes(30))
-															.build())
-											.build(),
-							"tenant2"
+      RegisteredClientDto dto = RegisteredClientConverter.from(
+              RegisteredClient.withId(UUID.randomUUID().toString())
+                      .clientId("spa-client")
+                      .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+                      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                      .redirectUris((uri) -> uri.add("http://localhost:3000/callback"))
+                      .scope(OidcScopes.OPENID)
+                      .scope("profile")
+                      .clientSettings(ClientSettings.builder()
+                              .requireProofKey(true)
+                              .requireAuthorizationConsent(true)
+                              .build())
+                      .tokenSettings(TokenSettings.builder()
+                              .accessTokenTimeToLive(Duration.ofMinutes(30))
+                              .build())
+                      .build(),
+              "tenant2"
 
-			);
-			mapper.save(dto);
-			TenantContext.clear();
-		};
-	}
+      );
+      mapper.save(dto);
+      TenantContext.clear();
+    };
+  }*/
 }

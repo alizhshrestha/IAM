@@ -24,6 +24,7 @@ public class CorsConfig {
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/oauth2/**", config);
+    source.registerCorsConfiguration("/public/api/**", config);
     source.registerCorsConfiguration("/login/**", config);       // Optional
     source.registerCorsConfiguration("/.well-known/**", config);
 

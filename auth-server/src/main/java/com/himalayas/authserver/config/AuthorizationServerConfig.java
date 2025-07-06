@@ -50,7 +50,8 @@ public class AuthorizationServerConfig {
           "/oauth2/jwks",
           "/login",
           "/default-ui.css",
-          "/favicon.ico "
+          "/favicon.ico",
+          "/public/api/tenants"
   };
 
   @Bean
