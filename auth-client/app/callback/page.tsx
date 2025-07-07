@@ -1,5 +1,6 @@
 'use client';
 
+import RoleBasedRedirect from "@/lib/RoleBasedRedirect";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -56,7 +57,6 @@ export default function CallbackPage() {
                 sessionStorage.setItem('access_token', data.access_token);
                 sessionStorage.setItem('id_token', data.id_token || '');
 
-                router.push('/dashboard');
             } catch (err: any) {
                 setError(err.message);
             }
@@ -73,12 +73,13 @@ export default function CallbackPage() {
         return <div className="p-6 text-gray-500">Exchanging code for tokens...</div>;
     }
 
-    return (
-        <main className="p-6">
-            <h1 className="text-xl font-bold mb-4">Authentication Successful</h1>
-            <pre className="bg-gray-700 text-white p-4 rounded-md overflow-x-auto text-sm">
-                {JSON.stringify(token, null, 2)}
-            </pre>
-        </main>
-    );
+    // return (
+    //     <main className="p-6">
+    //         <h1 className="text-xl font-bold mb-4">Authentication Successful</h1>
+    //         <pre className="bg-gray-700 text-white p-4 rounded-md overflow-x-auto text-sm">
+    //             {JSON.stringify(token, null, 2)}
+    //         </pre>
+    //     </main>
+    // );
+    return <RoleBasedRedirect/>;
 }
