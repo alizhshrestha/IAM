@@ -2,6 +2,7 @@
 
 import AdminCharts from "@/components/admin/AdminCharts";
 import AdminStats from "@/components/admin/AdminStats";
+import RecentAdmissionsTable from "@/components/admin/RecentAdmissionsTable";
 import { useAuth } from "@/hooks/useAuth"
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -25,6 +26,7 @@ export default function AdminPage() {
 
       <AdminStats />
       <AdminCharts/>
+      <RecentAdmissionsTable/>
 
       {/* Next: Charts or Reports Section */}
     </main>
