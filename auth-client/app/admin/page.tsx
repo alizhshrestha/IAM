@@ -1,5 +1,7 @@
 'use client'
 
+import AdminCharts from "@/components/admin/AdminCharts";
+import AdminStats from "@/components/admin/AdminStats";
 import { useAuth } from "@/hooks/useAuth"
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -18,24 +20,13 @@ export default function AdminPage() {
     if (!user?.roles.includes('ROLE_ADMIN')) return null;
 
     return (
-        <main className="p-6">
-            <h1 className="text-3xl font-bold mb-4">Welcome Admin {user.username}</h1>
+    <main className="p-6 space-y-6">
+      <h1 className="text-3xl font-bold">Admin Dashboard</h1>
 
-            <section className="grid grid-cols-2 gap-4">
-                <AdminCard title="Manage Users" description="Add, remove or update users" />
-                <AdminCard title="Manage Schools" description="Configure school details" />
-                <AdminCard title="Reports" description="Download insights and reports" />
-                <AdminCard title="Settings" description="Configure tenant preferences" />
-            </section>
-        </main>
-    )
-}
+      <AdminStats />
+      <AdminCharts/>
 
-function AdminCard({title, description}: {title: string, description: string}){
-    return (
-        <div className="bg-white p-6 shadow rounded-lg border border-gray-200">
-            <h2 className="text-xl font-semibold mb-2">{title}</h2>
-            <p className="text-gray-600">{description}</p>
-        </div>
-    )
+      {/* Next: Charts or Reports Section */}
+    </main>
+  );
 }
