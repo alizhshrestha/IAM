@@ -1,6 +1,6 @@
 package com.himalayas.authserver.config;
 
-import com.himalayas.authserver.entity.CustomUserDetails;
+import com.himalayas.authserver.service.CustomUserDetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;

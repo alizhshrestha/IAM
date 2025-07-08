@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/IAM.iml" filepath="$PROJECT_DIR$/IAM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shared-domain/shared-domain.iml" filepath="$PROJECT_DIR$/shared-domain/shared-domain.iml" />
     </modules>
   </component>
 </project>

@@ -3,7 +3,7 @@ package com.himalayas.schoolservice.config;
 import com.himalayas.schoolservice.context.UserContextCleanupFilter;
 import com.himalayas.securitycommons.config.CustomJwtAuthenticationConverter;
 import com.himalayas.securitycommons.tenant.JwtTenantValidator;
-import com.himalayas.securitycommons.tenant.Tenant;
+import com.himalayas.shareddomain.entities.Tenant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

@@ -1,5 +1,6 @@
 package com.himalayas.securitycommons.tenant;
 
+import com.himalayas.shareddomain.entities.Tenant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

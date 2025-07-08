@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/resource-server/pom.xml" />
         <option value="$PROJECT_DIR$/school-service/pom.xml" />
         <option value="$PROJECT_DIR$/security-commons/pom.xml" />
+        <option value="$PROJECT_DIR$/shared-domain/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

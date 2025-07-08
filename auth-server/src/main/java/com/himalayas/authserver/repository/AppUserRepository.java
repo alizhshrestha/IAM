@@ -1,6 +1,6 @@
 package com.himalayas.authserver.repository;
 
-import com.himalayas.authserver.entity.AppUser;
+import com.himalayas.shareddomain.entities.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,6 @@
 package com.himalayas.securitycommons.tenant;
 
+import com.himalayas.shareddomain.entities.Tenant;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

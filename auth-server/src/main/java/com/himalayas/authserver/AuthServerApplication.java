@@ -1,23 +1,12 @@
 package com.himalayas.authserver;
 
-import com.himalayas.authserver.context.TenantContext;
-import com.himalayas.authserver.converter.RegisteredClientConverter;
-import com.himalayas.authserver.dto.RegisteredClientDto;
-import com.himalayas.authserver.mapper.TenantAwareRegisteredClientMapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
-
-import java.time.Duration;
-import java.util.UUID;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication(
         scanBasePackages = {
@@ -25,11 +14,27 @@ import java.util.UUID;
                 "com.himalayas.securitycommons"
         })
 @MapperScan("com.himalayas.authserver.mapper")
+@EntityScan(basePackages = "com.himalayas.shareddomain.entities")
 public class AuthServerApplication {
+
+/*  private final PasswordEncoder passwordEncoder;
+
+  public AuthServerApplication(PasswordEncoder passwordEncoder) {
+    this.passwordEncoder = passwordEncoder;
+  }*/
 
   public static void main(String[] args) {
     SpringApplication.run(AuthServerApplication.class, args);
   }
+
+/*    @Bean
+	public CommandLineRunner initData(){
+      return args -> {
+        System.out.println("------------------password encoded------------------");
+        System.out.println(passwordEncoder.encode("password"));
+      };
+	}*/
+
 
 	/*@Bean
 	public CommandLineRunner initData(TenantRepository tenantRepository,

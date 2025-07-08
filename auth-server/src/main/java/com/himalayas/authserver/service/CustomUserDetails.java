@@ -1,5 +1,6 @@
-package com.himalayas.authserver.entity;
+package com.himalayas.authserver.service;
 
+import com.himalayas.shareddomain.entities.AppUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

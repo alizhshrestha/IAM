@@ -1,5 +1,6 @@
 package com.himalayas.securitycommons.tenant;
 
+import com.himalayas.shareddomain.entities.Tenant;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;

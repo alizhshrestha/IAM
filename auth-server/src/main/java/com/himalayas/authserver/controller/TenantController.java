@@ -1,7 +1,7 @@
 package com.himalayas.authserver.controller;
 
-import com.himalayas.securitycommons.tenant.Tenant;
 import com.himalayas.securitycommons.tenant.TenantService;
+import com.himalayas.shareddomain.entities.Tenant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +19,8 @@ public class TenantController {
   private final TenantService tenantService;
 
   @GetMapping
-  public ResponseEntity<List<String>> getAllTenants(){
+  public ResponseEntity<List<Tenant>> getAllTenants(){
     Optional<List<Tenant>> tenantsOpt = tenantService.findAll();
-    return tenantsOpt.map(tenants -> ResponseEntity.ok(tenants.stream().map(Tenant::getId).toList())).orElseGet(() -> ResponseEntity.notFound().build());
+    return tenantsOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

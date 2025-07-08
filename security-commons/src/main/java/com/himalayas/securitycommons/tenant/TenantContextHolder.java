@@ -1,5 +1,7 @@
 package com.himalayas.securitycommons.tenant;
 
+import com.himalayas.shareddomain.entities.Tenant;
+
 public class TenantContextHolder {
 
   private static final ThreadLocal<Tenant> CONTEXT = new ThreadLocal<>();

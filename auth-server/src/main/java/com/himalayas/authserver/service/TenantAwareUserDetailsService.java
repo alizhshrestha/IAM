@@ -1,12 +1,10 @@
 package com.himalayas.authserver.service;
 
 import com.himalayas.authserver.context.TenantContext;
-import com.himalayas.authserver.entity.AppUser;
-import com.himalayas.authserver.entity.CustomUserDetails;
 import com.himalayas.authserver.repository.AppUserRepository;
+import com.himalayas.shareddomain.entities.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

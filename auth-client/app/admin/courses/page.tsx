@@ -1,5 +1,7 @@
 'use client';
 
+import CourseCard from "@/components/course/CourseCard";
+
 type Course = {
     id: string;
     name: string;
@@ -22,31 +24,18 @@ export default function CoursesPage() {
                     + Add Course
                 </button>
             </div>
-            <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
-                <table className="min-w-full text-sm text-left">
-                    <thead className="bg-gray-50 border-b text-gray-600">
-                        <tr>
-                            <th className="py-3 px-4">Course Name</th>
-                            <th className="py-3 px-4">Teacher</th>
-                            <th className="py-3 px-4">Grade</th>
-                            <th className="py-3 px-4">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {dummyCourses.map((course) => (
-                            <tr key={course.id} className="border-b hover:bg-gray-50 transition">
-                                <td className="py-3 px-4 font-medium text-gray-800">{course.name}</td>
-                                <td className="py-3 px-4">{course.teacher}</td>
-                                <td className="py-3 px-4">{course.grade}</td>
-                                <td className="py-3 px-4 space-x-2">
-                                    <button className="text-blue-600 hover:underline text-sm">Edit</button>
-                                    <button className="text-red-600 hover:underline text-sm">Delete</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+
+            <div className="space-y-4">
+                {dummyCourses.map((course) => (
+                    <CourseCard
+                        key={course.id}
+                        id={course.id}
+                        name={course.name}
+                        grade={course.grade}
+                        teacher={course.teacher}
+                    />
+                ))}
             </div>
         </div>
-    )
+    );
 }

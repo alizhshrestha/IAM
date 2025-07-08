@@ -20,3 +20,15 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text-main);
 }
+
+.card {
+  @apply bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition flex flex-col sm:flex-row justify-between sm:items-center;
+}
+
+.form-label{
+  @apply block font-medium mb-1;
+}
+
+.form-text-field{
+  @apply w-full border px-4 py-2 rounded-md;
+}
