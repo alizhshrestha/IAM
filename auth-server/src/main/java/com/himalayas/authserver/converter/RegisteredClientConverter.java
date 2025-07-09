@@ -121,8 +121,4 @@ public class RegisteredClientConverter {
 
     return value;
   }
-
-
-
-
 }

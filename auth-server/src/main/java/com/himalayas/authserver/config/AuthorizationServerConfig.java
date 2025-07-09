@@ -111,34 +111,6 @@ public class AuthorizationServerConfig {
     return http.build();
   }
 
-  /*@Bean
-  public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder){
-    RegisteredClient registeredClient1 = RegisteredClient.withId(UUID.randomUUID().toString())
-            .clientId("client")
-            .clientSecret(passwordEncoder.encode("secret"))
-            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri("http://127.0.0.1:3000/callback") // Change for PKCE frontend
-            .scope(OidcScopes.OPENID)
-            .scope("profile")
-            .build();
-
-    RegisteredClient registeredClient2 = RegisteredClient.withId(UUID.randomUUID().toString())
-            .clientId("spa-client")
-            .clientAuthenticationMethod(ClientAuthenticationMethod.NONE) // Public client
-            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .redirectUri("http://localhost:3000/callback")
-            .scope(OidcScopes.OPENID)
-            .clientSettings(ClientSettings.builder()
-                    .requireProofKey(true)
-                    .build()) // 🔐 Enforce PKCE
-            .build();
-
-    return new InMemoryRegisteredClientRepository(registeredClient1, registeredClient2);
-
-  }*/
-
   @Bean
   public AuthenticationManager authenticationManager() {
     DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(tenantAwareUserDetailsService);
