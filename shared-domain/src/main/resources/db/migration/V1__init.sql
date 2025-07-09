@@ -30,6 +30,27 @@ CREATE TABLE registered_client
     CONSTRAINT uq_client_tenant UNIQUE (client_id, tenant_id)
 );
 
+-- ========== AUTH USERS (FOR SPRING AUTH SERVER) ==========
+CREATE TABLE app_users
+(
+    id             VARCHAR(255) PRIMARY KEY,
+    tenant_id      VARCHAR(100),
+    username       VARCHAR(255) NOT NULL UNIQUE,
+    password       VARCHAR(255) NOT NULL,
+    enabled        BOOLEAN DEFAULT TRUE,
+    is_super_admin BOOLEAN DEFAULT FALSE,
+    CONSTRAINT fk_app_users_tenant FOREIGN KEY (tenant_id) REFERENCES tenants (id)
+);
+
+-- ========== AUTH USER ROLES ==========
+CREATE TABLE app_user_roles
+(
+    user_id VARCHAR(255) NOT NULL,
+    role    VARCHAR(255),
+    PRIMARY KEY (user_id, role),
+    FOREIGN KEY (user_id) REFERENCES app_users (id) ON DELETE CASCADE
+);
+
 -- ========== SCHOOLS ==========
 CREATE TABLE schools
 (
@@ -42,24 +63,39 @@ CREATE TABLE schools
     CONSTRAINT fk_schools_tenant FOREIGN KEY (tenant_id) REFERENCES tenants (id)
 );
 
+-- ========== DOMAIN USERS (linked to app_users) ==========
+CREATE TABLE users
+(
+    id          VARCHAR(255) PRIMARY KEY,
+    app_user_id VARCHAR(100) NOT NULL,
+    full_name   VARCHAR(255) NOT NULL,
+    email       VARCHAR(255) NOT NULL,
+    active      BOOLEAN DEFAULT TRUE,
+    school_id   VARCHAR(255),
+    CONSTRAINT fk_users_school FOREIGN KEY (school_id) REFERENCES schools (id),
+    CONSTRAINT fk_users_app_user FOREIGN KEY (app_user_id) REFERENCES app_users (id)
+);
+
+-- ========== USER PROFILES (optional extra info) ==========
+-- CREATE TABLE user_profiles
+-- (
+--     id           VARCHAR(100) PRIMARY KEY,
+--     user_id      VARCHAR(100) NOT NULL UNIQUE,
+--     phone_number VARCHAR(50),
+--     gender       VARCHAR(10),
+--     dob          DATE,
+--     profile_pic  VARCHAR(255),
+--     address      VARCHAR(255),
+--     bio          TEXT,
+--     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+-- );
+
 -- ========== ROLES ==========
 CREATE TABLE roles
 (
     id          VARCHAR(255) PRIMARY KEY,
     name        VARCHAR(100) NOT NULL UNIQUE,
     description VARCHAR(255)
-);
-
--- ========== USERS ==========
-CREATE TABLE users
-(
-    id        VARCHAR(255) PRIMARY KEY,
-    full_name VARCHAR(255) NOT NULL,
-    email     VARCHAR(255) NOT NULL UNIQUE,
-    password  VARCHAR(255) NOT NULL,
-    active    BOOLEAN DEFAULT TRUE,
-    school_id VARCHAR(255),
-    CONSTRAINT fk_users_school FOREIGN KEY (school_id) REFERENCES schools (id)
 );
 
 -- ========== USER ROLES ==========
@@ -70,24 +106,4 @@ CREATE TABLE user_roles
     PRIMARY KEY (user_id, role_id),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
-);
-
--- ========== AUTH USERS (FOR SPRING AUTH SERVER) ==========
-CREATE TABLE app_users
-(
-    id        VARCHAR(255) PRIMARY KEY,
-    tenant_id VARCHAR(100) NOT NULL,
-    username  VARCHAR(255) NOT NULL UNIQUE,
-    password  VARCHAR(255) NOT NULL,
-    enabled   BIT(1)       NOT NULL DEFAULT 1,
-    CONSTRAINT fk_app_users_tenant FOREIGN KEY (tenant_id) REFERENCES tenants (id)
-);
-
--- ========== AUTH USER ROLES ==========
-CREATE TABLE app_user_roles
-(
-    user_id VARCHAR(255) NOT NULL,
-    role    VARCHAR(255),
-    PRIMARY KEY (user_id, role),
-    FOREIGN KEY (user_id) REFERENCES app_users (id) ON DELETE CASCADE
 );

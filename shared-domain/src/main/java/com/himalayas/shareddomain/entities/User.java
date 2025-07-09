@@ -1,5 +1,6 @@
 package com.himalayas.shareddomain.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,10 +31,9 @@ public class User {
 
   private String fullName;
 
-  @Column(unique = true)
+  @Column(nullable = false)
   private String email;
 
-  private String password;
   private Boolean active = true;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -46,4 +47,11 @@ public class User {
           inverseJoinColumns = @JoinColumn(name = "role_id")
   )
   private Set<Role> roles = new HashSet<>();
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "app_user_id")
+  private AppUser appUser;
+
+//  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//  private UserProfiles userProfile; // Changed to singular and OneToOne
 }
