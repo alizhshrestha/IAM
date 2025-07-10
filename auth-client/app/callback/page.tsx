@@ -14,7 +14,7 @@ export default function CallbackPage() {
         const handleOAuthCallback = async () => {
             const code = searchParams.get('code');
             const state = searchParams.get('state');
-
+            console.log(`code: ${code} && state: ${state}`);
             if (!code || !state) {
                 setError('Missing code or state from callback URL.');
                 return;
@@ -42,8 +42,8 @@ export default function CallbackPage() {
                     body: new URLSearchParams({
                         grant_type: 'authorization_code',
                         code,
-                        redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URI!,
-                        client_id: process.env.NEXT_PUBLIC_CLIENT_ID!,
+                        redirect_uri: sessionStorage.getItem('redirect-uri')!,
+                        client_id: sessionStorage.getItem('client_id')!,
                         code_verifier: codeVerifier,
                     }),
                 });
