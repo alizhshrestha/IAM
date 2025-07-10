@@ -16,4 +16,5 @@ public class SchoolDto {
   private String address;
   private String academicYear;
   private String tenantId;
+  private String role;
 }

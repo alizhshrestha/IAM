@@ -1,6 +1,6 @@
 'use client';
 
-import RoleBasedRedirect from "@/lib/RoleBasedRedirect";
+import SchoolSelector, { getRolePath, School } from "@/components/SchoolSelector";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -8,7 +8,7 @@ export default function CallbackPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
-    const [token, setToken] = useState<any>(null);
+    const [schools, setSchools] = useState<School[] | null>(null);
 
     useEffect(() => {
         const handleOAuthCallback = async () => {
@@ -21,6 +21,7 @@ export default function CallbackPage() {
             }
 
             const [tenant, receivedState] = state.split('|');
+            console.log(`tenant: ${tenant}, receivedState: ${receivedState}`);
 
             const expectedState = sessionStorage.getItem('oauth_state');
             const codeVerifier = sessionStorage.getItem('pkce_code_verifier');
@@ -52,34 +53,41 @@ export default function CallbackPage() {
                 if (!res.ok) {
                     throw new Error(data.error_description || 'Token exchange failed');
                 }
-
-                setToken(data);
                 sessionStorage.setItem('access_token', data.access_token);
                 sessionStorage.setItem('id_token', data.id_token || '');
 
+                // ✅ Fetch schools
+                const schoolResponse = await fetch(`http://localhost:8081/api/users/me/schools`, {
+                    headers: {
+                        Authorization: `Bearer ${data.access_token}`,
+                    },
+                });
+
+                const schoolsData = await schoolResponse.json();
+                if(!schoolResponse.ok) throw new Error("Failed to fetch schools");
+
+                if(schoolsData.length === 1){
+                    const school = schoolsData[0];
+                    const rolePath = getRolePath(school.role);
+                    router.push(`/schools/${school.id}/${rolePath}`)
+                }else{
+                    setSchools(schoolsData);
+                }
             } catch (err: any) {
                 setError(err.message);
             }
         };
 
         handleOAuthCallback();
-    }, [searchParams]);
+    }, [searchParams, router]);
 
     if (error) {
         return <div className="p-6 text-red-600">Error: {error}</div>;
     }
 
-    if (!token) {
-        return <div className="p-6 text-gray-500">Exchanging code for tokens...</div>;
+    if(schools){
+        return <SchoolSelector schools={schools}/>
     }
 
-    // return (
-    //     <main className="p-6">
-    //         <h1 className="text-xl font-bold mb-4">Authentication Successful</h1>
-    //         <pre className="bg-gray-700 text-white p-4 rounded-md overflow-x-auto text-sm">
-    //             {JSON.stringify(token, null, 2)}
-    //         </pre>
-    //     </main>
-    // );
-    return <RoleBasedRedirect/>;
+    return null;
 }

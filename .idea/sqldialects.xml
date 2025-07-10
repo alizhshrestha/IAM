@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/auth-server/src/main/java/com/himalayas/authserver/mapper/ClientMapper.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/auth-server/src/main/java/com/himalayas/authserver/mapper/TenantAwareRegisteredClientMapper.java" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/school-service/src/main/java/com/himalayas/schoolservice/mapper/SchoolMapper.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/school-service/src/main/java/com/himalayas/schoolservice/mapper/UserMapper.java" dialect="GenericSQL" />

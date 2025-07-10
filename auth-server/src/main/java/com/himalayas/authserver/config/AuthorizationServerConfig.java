@@ -51,7 +51,7 @@ public class AuthorizationServerConfig {
           "/login",
           "/default-ui.css",
           "/favicon.ico",
-          "/public/api/tenants"
+          "/public/**"
   };
 
   @Bean

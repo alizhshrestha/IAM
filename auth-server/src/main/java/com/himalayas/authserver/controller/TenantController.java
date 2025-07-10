@@ -21,6 +21,11 @@ public class TenantController {
   @GetMapping
   public ResponseEntity<List<Tenant>> getAllTenants(){
     Optional<List<Tenant>> tenantsOpt = tenantService.findAll();
-    return tenantsOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    if(tenantsOpt.isPresent()){
+      List<Tenant> tenants = tenantsOpt.get();
+      List<Tenant> filteredTenants = tenants.stream().filter(tenant -> !tenant.getId().equals("public")).toList();
+      return ResponseEntity.ok(filteredTenants);
+    }
+    return ResponseEntity.notFound().build();
   }
 }

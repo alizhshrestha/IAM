@@ -12,14 +12,16 @@ export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [tenants, setTenants] = useState<Tenant[]>([]);
     const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
-    const tenantId = 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11';
+    // const tenantId = 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11';
 
     useEffect(()=>{
-        fetch(`http://${tenantId}.auth.example.com:9000/public/api/tenants`)
+        fetch(`http://public.auth.example.com:9000/public/api/tenants`)
         .then((res) => res.json())
         .then(setTenants)
         .catch((err) => console.error("Failed to fetch tenants", err));
     },[]);
+
+    console.log(tenants);
 
     const handleLogin = async () => {
 
@@ -30,19 +32,20 @@ export default function LoginPage() {
 
         setIsLoading(true);
 
-        const tenant = selectedTenant.id;
+        const tenant = selectedTenant;
+        const tenantId = selectedTenant.id;
         const clientId = process.env.NEXT_PUBLIC_CLIENT_ID!;
         const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI!;
-        const authBaseUrl = `http://${tenant}.auth.example.com:9000/oauth2/authorize`;
+        const authBaseUrl = `http://${tenantId}.auth.example.com:9000/oauth2/authorize`;
 
         const csrfToken = crypto.randomUUID(); // Unique state for CSRF protection
-        const state = `${tenant}|${csrfToken}`
+        const state = `${tenantId}|${csrfToken}`
         const codeVerifier = generateCodeVerifier();
         const codeChallenge = await generateCodeChallenge(codeVerifier);
 
         sessionStorage.setItem('pkce_code_verifier', codeVerifier);
         sessionStorage.setItem('oauth_state', csrfToken);
-        sessionStorage.setItem('tenant', tenant);
+        sessionStorage.setItem('tenant', tenantId);
         console.log(`Tenant is: ${tenant}`)
 
         const url = new URL(authBaseUrl);
@@ -70,11 +73,6 @@ export default function LoginPage() {
                     }}
                 >
                     <option value="">-- Choose Tenant --</option>
-                    {/* {tenants.map((tenant) => (
-                        <option key={tenant} value={tenant}>
-                            {tenant}
-                        </option>
-                    ))} */}
                     {
                         tenants.map((tenant) => (
                             <option key={tenant.id} value={tenant.id}>

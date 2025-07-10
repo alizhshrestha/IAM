@@ -21,10 +21,10 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
     String username = jwt.getSubject();
     List<String> roles = jwt.getClaimAsStringList("roles");
     String tenantId = extractTenantId();
-    String userId = jwt.getClaimAsString("user_id");
+    String appUserId = jwt.getClaimAsString("app_user_id");
     String email = jwt.getClaimAsString("email");
 
-    AuthenticatedUser user = new AuthenticatedUser(username, roles, tenantId, userId, email);
+    AuthenticatedUser user = new AuthenticatedUser(username, roles, tenantId, appUserId, email);
     UserContextHolder.setUser(user);
 
     List<GrantedAuthority> authorities = roles.stream()

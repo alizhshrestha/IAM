@@ -26,7 +26,7 @@ public class JwtTokenCustomizerConfig {
                   .collect(Collectors.toSet());
           context.getClaims().claim("roles", roles);
           context.getClaims().claim("tenant", userDetails.getTenantId());
-          context.getClaims().claim("user_id", userDetails.getAppUser().getId());
+          context.getClaims().claim("app_user_id", userDetails.getAppUser().getId());
           context.getClaims().claim("email", userDetails.getUsername());
         }
       }

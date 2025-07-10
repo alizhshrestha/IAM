@@ -15,9 +15,14 @@ public interface SchoolMapper {
   List<School> findByTenantId(@Param("tenantId") String tenantId);
 
   @Select("""
-              SELECT s.id, s.name, s.logo_url, s.address, s.academic_year, s.tenant_id
-              FROM schools s JOIN users u
-                  ON s.id = u.school_id
+              SELECT s.id, s.name, s.logo_url, s.address, s.academic_year, s.tenant_id, r.name AS role
+              FROM schools s 
+                  JOIN users u
+                      ON s.id = u.school_id
+                  JOIN user_roles ur
+                      ON u.id = ur.user_id
+                  JOIN roles r
+                      ON ur.role_id = r.id
               WHERE s.tenant_id = #{tenantId} AND u.app_user_id = #{appUserId}
           """)
   List<SchoolDto> findUserSchools(@Param("tenantId") String tenantId, @Param("appUserId") String appUserId);
