@@ -19,7 +19,7 @@ export const getRolePath = (role: string) => {
         case "ROLE_STUDENT":
             return "student";
         default:
-            return "dashboard";
+            return "unauthorized";
     }
 }
 

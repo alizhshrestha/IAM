@@ -1,7 +1,7 @@
 'use client'
 
-import ClientSelector from "@/components/ClientSelector";
-import TenantSelector from "@/components/TenantSelector";
+import ClientSelector from "@/components/selector/ClientSelector";
+import TenantSelector from "@/components/selector/TenantSelector";
 import { generateCodeChallenge, generateCodeVerifier } from "@/lib/pkce";
 import { ClientInfo, Tenant } from "@/types";
 import { useEffect, useState } from "react"

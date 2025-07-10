@@ -1,3 +1,4 @@
+import TeacherSidebar from '@/components/teacher/TeacherSidebar';
 import React from 'react';
 
 export default function TeacherLayout({
@@ -6,12 +7,9 @@ export default function TeacherLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 text-black">
-      <header className="bg-blue-600 text-white p-4 shadow-md">
-        <h1 className="text-xl font-bold">Teacher Panel</h1>
-      </header>
-
-      <main className="p-6">{children}</main>
+    <div className='flex min-h-screen'>
+      <TeacherSidebar />
+      <main className='flex-1 p-6 bg-gray-50'>{children}</main>
     </div>
   );
 }

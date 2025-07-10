@@ -1,6 +1,6 @@
 'use client';
 
-import SchoolSelector, { getRolePath, School } from "@/components/SchoolSelector";
+import SchoolSelector, { getRolePath, School } from "@/components/selector/SchoolSelector";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
