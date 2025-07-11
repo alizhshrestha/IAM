@@ -1,5 +1,6 @@
 package com.himalayas.shareddomain.entities;
 
+import com.himalayas.shareddomain.entities.auditable.AuditableEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,9 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,7 +27,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends AuditableEntity {
   @Id
   private String id;
 
@@ -55,7 +54,7 @@ public class User {
   @JoinColumn(name = "app_user_id")
   private AppUser appUser;
 
-  @OneToMany(mappedBy = "teacherId",cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "teacherId", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<ClassSubject> classSubjects = new HashSet<>();
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -64,7 +63,7 @@ public class User {
   @OneToOne(mappedBy = "recordedBy", cascade = CascadeType.ALL, orphanRemoval = true)
   private Attendance recordedByUser;
 
-  @OneToMany(mappedBy = "uploadedBy",cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "uploadedBy", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Resources> resources = new HashSet<>();
 
 //  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

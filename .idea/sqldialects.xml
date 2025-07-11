@@ -9,5 +9,8 @@
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V2__seed_data.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V3__audit_columns.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V4__classes_teacher_associative_tables_creation.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V5__seed_data2.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V6__audit_columns_v2.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V7__audit_columns_v3.sql" dialect="MySQL" />
   </component>
 </project>

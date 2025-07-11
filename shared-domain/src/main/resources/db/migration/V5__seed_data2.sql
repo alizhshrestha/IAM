@@ -1,0 +1,92 @@
+-- -- === CLASSES for Himalaya High School ===
+-- INSERT INTO classes (id, name, section, grade, school_id, tenant_id, created_at, updated_at, created_by, updated_by)
+-- VALUES
+-- -- Grade 1
+-- ('hima-class-01', 'Grade 1 - A', 'A', '1', 'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', now(), now(), 'admin', 'admin'),
+-- -- Grade 2
+-- ('hima-class-02', 'Grade 2 - A', 'A', '2', 'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', now(), now(), 'admin', 'admin'),
+-- -- Grade 3
+-- ('hima-class-03', 'Grade 3 - A', 'A', '3', 'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', now(), now(), 'admin', 'admin');
+--
+--
+-- -- === SUBJECTS for Himalaya High School ===
+-- INSERT INTO subjects (id, name, description, school_id, tenant_id, created_at, updated_at, created_by, updated_by)
+-- VALUES
+--     ('math-001', 'Mathematics', 'Basic Arithmetic and Numbers', 'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', now(), now(), 'admin', 'admin'),
+--     ('sci-001',  'Science',     'Introduction to Science',       'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', now(), now(), 'admin', 'admin'),
+--     ('eng-001',  'English',     'English Grammar and Reading',   'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', now(), now(), 'admin', 'admin');
+--
+--
+-- -- === CLASS-SUBJECTS ===
+-- INSERT INTO class_subjects (id, class_id, subject_id, teacher_id, created_at, updated_at)
+-- VALUES
+-- -- Grade 1
+-- ('cs-001', 'hima-class-01', 'math-001', 'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now()),
+-- ('cs-002', 'hima-class-01', 'sci-001',  'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now()),
+-- ('cs-003', 'hima-class-01', 'eng-001',  'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now()),
+--
+-- -- Grade 2
+-- ('cs-004', 'hima-class-02', 'math-001', 'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now()),
+-- ('cs-005', 'hima-class-02', 'sci-001',  'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now()),
+-- ('cs-006', 'hima-class-02', 'eng-001',  'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now());
+--
+-- -- === ASSIGNMENTS ===
+-- INSERT INTO assignments (id, title, description, class_subject_id, due_date, created_at, updated_at)
+-- VALUES
+--     ('ass-001', 'Math Homework 1', 'Complete exercises 1 to 5', 'cs-001', now() + INTERVAL 3 day, now(), now()),
+--     ('ass-002', 'Science Worksheet', 'Label parts of a plant', 'cs-002', now() + INTERVAL 2 day, now(), now());
+--
+-- -- === EXAMS ===
+-- INSERT INTO exams (id, title, description, class_subject_id, scheduled_at, created_at, updated_at)
+-- VALUES
+--     ('exam-001', 'Math Test 1', 'Basic addition and subtraction', 'cs-001', now() + INTERVAL 5 day, now(), now()),
+--     ('exam-002', 'Science Quiz', 'Animals and their habitats', 'cs-002', now() + INTERVAL 6 day, now(), now());
+--
+-- -- === RESOURCES ===
+-- INSERT INTO resources (id, title, file_url, type, class_subject_id, uploaded_by, created_at, updated_at)
+-- VALUES
+--     ('res-001', 'Math Chapter 1 Notes', 'https://example.com/math1.pdf', 'PDF', 'cs-001', 'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now()),
+--     ('res-002', 'Science Video - Plants', 'https://example.com/plant-video.mp4', 'VIDEO', 'cs-002', 'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now());
+--
+-- -- === APP USERS: Students for Himalaya ===
+-- INSERT INTO app_users (id, tenant_id, username, password, enabled, is_super_admin)
+-- VALUES
+-- -- Grade 1
+-- ('stu-app-1-01', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', 'stu1a@himalaya.edu', '$2a$10$hPFsfcVjRBy.Ym.yhvFESOYRMx0OYcftUJh9D5Eo92/UlNwM8CXN6', TRUE, FALSE),
+-- ('stu-app-1-02', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', 'stu1b@himalaya.edu', '$2a$10$hPFsfcVjRBy.Ym.yhvFESOYRMx0OYcftUJh9D5Eo92/UlNwM8CXN6', TRUE, FALSE),
+-- ('stu-app-1-03', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', 'stu1c@himalaya.edu', '$2a$10$hPFsfcVjRBy.Ym.yhvFESOYRMx0OYcftUJh9D5Eo92/UlNwM8CXN6', TRUE, FALSE),
+-- ('stu-app-1-04', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', 'stu1d@himalaya.edu', '$2a$10$hPFsfcVjRBy.Ym.yhvFESOYRMx0OYcftUJh9D5Eo92/UlNwM8CXN6', TRUE, FALSE),
+-- ('stu-app-1-05', 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11', 'stu1e@himalaya.edu', '$2a$10$hPFsfcVjRBy.Ym.yhvFESOYRMx0OYcftUJh9D5Eo92/UlNwM8CXN6', TRUE, FALSE);
+--
+--
+-- -- === USERS (Profiles linked to above app_users) ===
+-- INSERT INTO users (id, full_name, email, school_id, app_user_id, active)
+-- VALUES
+-- -- Grade 1
+-- ('stu-hima-1-1', 'Student One',   'stu1a@himalaya.edu', 'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'stu-app-1-01', TRUE),
+-- ('stu-hima-1-2', 'Student Two',   'stu1b@himalaya.edu', 'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'stu-app-1-02', TRUE),
+-- ('stu-hima-1-3', 'Student Three', 'stu1c@himalaya.edu', 'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'stu-app-1-03', TRUE),
+-- ('stu-hima-1-4', 'Student Four',  'stu1d@himalaya.edu', 'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'stu-app-1-04', TRUE),
+-- ('stu-hima-1-5', 'Student Five',  'stu1e@himalaya.edu', 'bfb6eb69-f90a-4536-9c32-9e4f8b9b9ef6', 'stu-app-1-05', TRUE);
+--
+--
+-- -- === USER ROLES ===
+-- INSERT INTO user_roles (user_id, role_id)
+-- VALUES
+--     ('stu-hima-1-1', '7bb1f1a6-3f4e-4b2e-81b5-fbe68f6f75e1'),
+--     ('stu-hima-1-2', '7bb1f1a6-3f4e-4b2e-81b5-fbe68f6f75e1'),
+--     ('stu-hima-1-3', '7bb1f1a6-3f4e-4b2e-81b5-fbe68f6f75e1'),
+--     ('stu-hima-1-4', '7bb1f1a6-3f4e-4b2e-81b5-fbe68f6f75e1'),
+--     ('stu-hima-1-5', '7bb1f1a6-3f4e-4b2e-81b5-fbe68f6f75e1');
+--
+--
+-- -- === ATTENDANCES for 3 students from Grade 1 ===
+-- INSERT INTO attendances (id, class_id, date, student_id, present, recorded_by, created_at, updated_at)
+-- VALUES
+--     ('att-001', 'hima-class-01', current_date, 'stu-hima-1-1', true, 'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now()),
+--     ('att-002', 'hima-class-01', current_date, 'stu-hima-1-2', false, 'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now()),
+--     ('att-003', 'hima-class-01', current_date, 'stu-hima-1-3', true, 'e62fd26c-1b5d-4530-8f08-1cf65f65f6a0', now(), now());
+--
+--
+--
+--

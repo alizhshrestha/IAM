@@ -1,5 +1,6 @@
 package com.himalayas.shareddomain.entities;
 
+import com.himalayas.shareddomain.entities.auditable.AuditableEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -14,7 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+public class Role extends AuditableEntity {
   @Id
   private String id;
   private String name;

@@ -1,5 +1,6 @@
 package com.himalayas.shareddomain.entities;
 
+import com.himalayas.shareddomain.entities.auditable.AuditableEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -26,7 +27,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUser {
+public class AppUser extends AuditableEntity {
   @Id
   private String id;
 

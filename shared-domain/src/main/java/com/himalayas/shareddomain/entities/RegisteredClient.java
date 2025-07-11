@@ -1,5 +1,6 @@
 package com.himalayas.shareddomain.entities;
 
+import com.himalayas.shareddomain.entities.auditable.AuditableEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -16,7 +17,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisteredClient {
+public class RegisteredClient extends AuditableEntity {
   @Id
   private String id;
 

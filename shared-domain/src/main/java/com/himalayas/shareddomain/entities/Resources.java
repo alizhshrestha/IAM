@@ -1,5 +1,6 @@
 package com.himalayas.shareddomain.entities;
 
+import com.himalayas.shareddomain.entities.auditable.AuditableEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Resources {
+public class Resources extends AuditableEntity {
   @Id
   private String id;
   @Column(nullable = false)
