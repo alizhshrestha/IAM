@@ -11,3 +11,11 @@ export interface ClientInfo {
   scopes: string;
   clientName: string;
 }
+
+export interface ClassData {
+  id: string;
+  name: string;
+  grade: string;
+  section: string;
+  subject: string;
+}

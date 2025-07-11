@@ -1,6 +1,6 @@
 package com.himalayas.schoolservice.mapper;
 
-import com.himalayas.schoolservice.dto.SchoolDto;
+import com.himalayas.schoolservice.dto.response.SchoolResponseDto;
 import com.himalayas.shareddomain.entities.School;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,8 +15,8 @@ public interface SchoolMapper {
   List<School> findByTenantId(@Param("tenantId") String tenantId);
 
   @Select("""
-              SELECT s.id, s.name, s.logo_url, s.address, s.academic_year, s.tenant_id, r.name AS role
-              FROM schools s 
+              SELECT s.id, s.name, s.logo_url, s.address, s.academic_year, s.tenant_id, r.name AS role, u.id AS userId
+              FROM schools s
                   JOIN users u
                       ON s.id = u.school_id
                   JOIN user_roles ur
@@ -25,5 +25,5 @@ public interface SchoolMapper {
                       ON ur.role_id = r.id
               WHERE s.tenant_id = #{tenantId} AND u.app_user_id = #{appUserId}
           """)
-  List<SchoolDto> findUserSchools(@Param("tenantId") String tenantId, @Param("appUserId") String appUserId);
+  List<SchoolResponseDto> findUserSchools(@Param("tenantId") String tenantId, @Param("appUserId") String appUserId);
 }

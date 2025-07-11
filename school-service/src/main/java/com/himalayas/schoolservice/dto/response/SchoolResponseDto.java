@@ -1,4 +1,4 @@
-package com.himalayas.schoolservice.dto;
+package com.himalayas.schoolservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +9,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SchoolDto {
+public class SchoolResponseDto {
   private String id;
   private String name;
   private String logoUrl;
   private String address;
   private String academicYear;
   private String tenantId;
+  private String userId;
   private String role;
 }

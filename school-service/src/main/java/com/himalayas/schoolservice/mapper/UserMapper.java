@@ -1,6 +1,5 @@
 package com.himalayas.schoolservice.mapper;
 
-import com.himalayas.schoolservice.dto.SchoolDto;
 import com.himalayas.schoolservice.dto.request.UserWithRoleDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

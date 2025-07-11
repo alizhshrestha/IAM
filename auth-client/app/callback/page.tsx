@@ -64,13 +64,16 @@ export default function CallbackPage() {
                 });
 
                 const schoolsData = await schoolResponse.json();
-                if(!schoolResponse.ok) throw new Error("Failed to fetch schools");
+                if (!schoolResponse.ok) throw new Error("Failed to fetch schools");
 
-                if(schoolsData.length === 1){
+                if (schoolsData.length === 1) {
                     const school = schoolsData[0];
                     const rolePath = getRolePath(school.role);
+                    localStorage.setItem("selected_school_id", school.id);
+                    localStorage.setItem("selected_role", school.role);
+                    localStorage.setItem("user_id", school.userId);
                     router.push(`/schools/${school.id}/${rolePath}`)
-                }else{
+                } else {
                     setSchools(schoolsData);
                 }
             } catch (err: any) {
@@ -85,8 +88,9 @@ export default function CallbackPage() {
         return <div className="p-6 text-red-600">Error: {error}</div>;
     }
 
-    if(schools){
-        return <SchoolSelector schools={schools}/>
+
+    if (schools) {
+        return <SchoolSelector schools={schools} />
     }
 
     return null;

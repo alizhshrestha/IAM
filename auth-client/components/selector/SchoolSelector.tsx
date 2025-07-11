@@ -1,4 +1,7 @@
+'use client';
+
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export type School = {
     id: string;
@@ -8,6 +11,7 @@ export type School = {
     academicYear: string;
     tenantId: string;
     role: string;
+    userId: string;
 };
 
 export const getRolePath = (role: string) => {
@@ -25,10 +29,12 @@ export const getRolePath = (role: string) => {
 
 export default function SchoolSelector({ schools }: { schools: School[] }) {
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     const handleSelect = (school: School) => {
-        sessionStorage.setItem("selected_school_id", school.id);
-        sessionStorage.setItem("selected_role", school.role);
+        localStorage.setItem("selected_school_id", school.id);
+        localStorage.setItem("selected_role", school.role);
+        localStorage.setItem("user_id", school.userId);
         router.push(`/schools/${school.id}/${getRolePath(school.role)}`);
     };
 

@@ -1,8 +1,7 @@
 package com.himalayas.schoolservice.controller;
 
-import com.himalayas.schoolservice.dto.SchoolDto;
+import com.himalayas.schoolservice.dto.response.SchoolResponseDto;
 import com.himalayas.schoolservice.mapper.SchoolMapper;
-import com.himalayas.schoolservice.service.UserService;
 import com.himalayas.securitycommons.annotation.CurrentUser;
 import com.himalayas.securitycommons.user.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +19,11 @@ public class UserController {
   private final SchoolMapper schoolMapper;
 
   @GetMapping("/me/schools")
-  public ResponseEntity<List<SchoolDto>> getUserSchools(@CurrentUser AuthenticatedUser user) {
+  public ResponseEntity<List<SchoolResponseDto>> getUserSchools(@CurrentUser AuthenticatedUser user) {
     String appUserId = user.getUserId();
     String tenantId = user.getTenantId();
 
-    List<SchoolDto> userSchools = schoolMapper.findUserSchools(tenantId, appUserId);
+    List<SchoolResponseDto> userSchools = schoolMapper.findUserSchools(tenantId, appUserId);
     if (userSchools.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
