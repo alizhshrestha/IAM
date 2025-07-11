@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "schools")
@@ -30,5 +32,11 @@ public class School {
   private String tenantId;
 
   @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<User> users = new ArrayList<>();
+  private Set<User> users = new HashSet<>();
+
+  @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<ClassEntity> classes = new HashSet<>();
+
+  @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<SubjectEntity> subjects = new HashSet<>();
 }

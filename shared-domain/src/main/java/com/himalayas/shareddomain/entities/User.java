@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -51,6 +54,18 @@ public class User {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "app_user_id")
   private AppUser appUser;
+
+  @OneToMany(mappedBy = "teacherId",cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<ClassSubject> classSubjects = new HashSet<>();
+
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Attendance studentAttendance;
+
+  @OneToOne(mappedBy = "recordedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Attendance recordedByUser;
+
+  @OneToMany(mappedBy = "uploadedBy",cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Resources> resources = new HashSet<>();
 
 //  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //  private UserProfiles userProfile; // Changed to singular and OneToOne

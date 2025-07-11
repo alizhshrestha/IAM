@@ -11,7 +11,6 @@ export default function TeacherClassesPage() {
 
     useEffect(() => {
         const token = sessionStorage.getItem('access_token');
-        console.log(`token: ${token}`);
         fetch('http://localhost:8081/api/teacher/classes', {
             headers: {
                 Authorization: `Bearer ${token}`,
