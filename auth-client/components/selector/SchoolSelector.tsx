@@ -1,65 +1,25 @@
-'use client';
+import { SchoolInfo } from "@/types";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
-export type School = {
-    id: string;
-    name: string;
-    logoUrl: string;
-    address: string;
-    academicYear: string;
-    tenantId: string;
-    role: string;
-    userId: string;
-};
-
-export const getRolePath = (role: string) => {
-    switch (role) {
-        case "ROLE_ADMIN":
-            return "admin";
-        case "ROLE_TEACHER":
-            return "teacher";
-        case "ROLE_STUDENT":
-            return "student";
-        default:
-            return "unauthorized";
-    }
+interface Props {
+    schools: SchoolInfo[];
+    onSelect: (school: SchoolInfo) => void;
 }
 
-export default function SchoolSelector({ schools }: { schools: School[] }) {
-    const router = useRouter();
-    const [loading, setLoading] = useState(false);
-
-    const handleSelect = (school: School) => {
-        localStorage.setItem("selected_school_id", school.id);
-        localStorage.setItem("selected_role", school.role);
-        localStorage.setItem("user_id", school.userId);
-        router.push(`/schools/${school.id}/${getRolePath(school.role)}`);
-    };
-
+export default function SchoolSelector({ schools, onSelect }: Props) {
     return (
-        <div className="p-8">
-            <h2 className="text-xl font-semibold mb-4">Select Your School</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <h2 className="text-lg font-semibold mb-2">Select your school</h2>
+            <div className="grid gap-2">
                 {schools.map((school) => (
                     <button
-                        key={school.id}
-                        onClick={() => handleSelect(school)}
-                        className="p-4 border rounded-xl hover:shadow-md text-left transition bg-white"
+                        key={school.schoolId}
+                        onClick={() => onSelect(school)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
                     >
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-lg font-bold">{school.name}</h3>
-                            <span className="text-sm bg-gray-100 px-2 py-1 rounded">
-                                {getRolePath(school.role)} dashboard
-                            </span>
-                        </div>
-                        <p className="text-sm text-gray-500 mt-2">{school.address}</p>
-                        <p className="text-sm text-gray-400">{school.academicYear}</p>
+                        {school.schoolName}
                     </button>
-                ))
-                }
+                ))}
             </div>
         </div>
-    )
+    );
 }

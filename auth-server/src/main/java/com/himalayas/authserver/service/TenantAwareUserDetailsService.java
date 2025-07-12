@@ -1,8 +1,8 @@
 package com.himalayas.authserver.service;
 
 import com.himalayas.authserver.context.TenantContext;
-import com.himalayas.authserver.repository.AppUserRepository;
 import com.himalayas.shareddomain.entities.AppUser;
+import com.himalayas.shareddomain.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

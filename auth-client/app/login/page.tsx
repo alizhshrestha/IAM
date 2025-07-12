@@ -1,63 +1,64 @@
-'use client'
+'use client';
 
+import { useEffect, useState } from "react";
+import SchoolSelector from "@/components/selector/SchoolSelector";
 import ClientSelector from "@/components/selector/ClientSelector";
-import TenantSelector from "@/components/selector/TenantSelector";
 import { generateCodeChallenge, generateCodeVerifier } from "@/lib/pkce";
-import { ClientInfo, Tenant } from "@/types";
-import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation";
+
+interface ClientInfo {
+    clientId: string;
+    clientName: string;
+    redirectUri: string;
+    scopes: string;
+}
+
+interface SchoolInfo {
+    schoolId: string;
+    schoolName: string;
+    tenantId: string;
+    tenantDomain: string;
+    clients: ClientInfo[];
+}
 
 export default function LoginPage() {
-
-    const [tenants, setTenants] = useState<Tenant[]>([]);
-    const [clients, setClients] = useState<ClientInfo[]>([]);
-    // const [schools, setSchools] = useState([]);
-    const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
+    const [schools, setSchools] = useState<SchoolInfo[]>([]);
+    const [selectedSchool, setSelectedSchool] = useState<SchoolInfo | null>(null);
     const [selectedClient, setSelectedClient] = useState<ClientInfo | null>(null);
-    // const [isLoading, setIsLoading] = useState(false);
-    // const tenantId = 'f8a231cb-3b45-4d67-87b0-08df2d3e9c11';
+    const router = useRouter();
 
-
-    //Fetch tenants on load
     useEffect(() => {
-        const fetchTenants = async () => {
+        const fetchSchools = async () => {
             try {
-                const res = await fetch(`http://public.auth.example.com:9000/public/api/tenants`);
+                const res = await fetch('http://public.auth.example.com:9000/public/api/schools');
                 const data = await res.json();
-                setTenants(data);
-            } catch (error) {
-                console.error('Failed to fetch tenants', error);
+                setSchools(data);
+            } catch (err) {
+                console.error("Failed to fetch schools", err);
             }
         };
-        fetchTenants();
+
+        fetchSchools();
     }, []);
 
-    //Step2: fetch clients once tenant is selected
     useEffect(() => {
-        if (!selectedTenant) return;
-        const fetchClients = async () => {
-            try {
-                const res = await fetch(`http://public.auth.example.com:9000/public/api/clients/tenant?tenantId=${selectedTenant.id}`);
-                const data = await res.json();
-                setClients(data);
-            } catch (error) {
-                console.error("Failed to fetch clients", error);
-            }
+        if (!selectedSchool) return;
+
+        if (selectedSchool.clients.length === 1) {
+            setSelectedClient(selectedSchool.clients[0]);
         }
-
-        fetchClients();
-    }, [selectedTenant]);
-
+    }, [selectedSchool]);
 
     useEffect(() => {
-        if (!selectedClient || !selectedTenant) return;
-        console.log(`selected client: ${selectedClient} & selected tenant: ${selectedTenant}`)
-        handleLogin();
+        if (selectedSchool && selectedClient) {
+            handleLogin();
+        }
     }, [selectedClient]);
 
-    const handleLogin = async (): Promise<void> => {
-        const tenantId = selectedTenant!.id;
+    const handleLogin = async () => {
+        const tenantId = selectedSchool!.tenantId;
         const clientId = selectedClient!.clientId;
-        const redirectUri = selectedClient!.redirectUris;
+        const redirectUri = selectedClient!.redirectUri;
         const scope = selectedClient!.scopes.replace(/,/g, ' ');
 
         const csrfToken = crypto.randomUUID();
@@ -70,7 +71,8 @@ export default function LoginPage() {
         sessionStorage.setItem('tenant', tenantId);
         sessionStorage.setItem('client_id', clientId);
         sessionStorage.setItem('redirect-uri', redirectUri);
-
+        sessionStorage.setItem('selected_school_id', selectedSchool!.schoolId);
+        sessionStorage.setItem('selected_school_name', selectedSchool!.schoolName);
 
         const authBaseUrl = `http://${tenantId}.auth.example.com:9000/oauth2/authorize`;
 
@@ -84,19 +86,17 @@ export default function LoginPage() {
         url.searchParams.set('state', state);
 
         window.location.href = url.toString();
-
     };
 
     return (
-        <main className="p-6 max-w-xl mx-auto">
-            {!selectedTenant && (
-                <TenantSelector tenants={tenants} onSelect={setSelectedTenant} />
+        <main className="p-6 max-w-xl mx-auto space-y-4">
+            {!selectedSchool && (
+                <SchoolSelector schools={schools} onSelect={setSelectedSchool} />
             )}
 
-            {selectedTenant && !selectedClient && clients.length > 0 && (
-                <ClientSelector clients={clients} onSelect={setSelectedClient} />
+            {selectedSchool && selectedSchool.clients.length > 1 && !selectedClient && (
+                <ClientSelector clients={selectedSchool.clients} onSelect={setSelectedClient} />
             )}
         </main>
     );
 }
-

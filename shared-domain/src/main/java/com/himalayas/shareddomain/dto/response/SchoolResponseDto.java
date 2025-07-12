@@ -1,4 +1,4 @@
-package com.himalayas.schoolservice.dto.response;
+package com.himalayas.shareddomain.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

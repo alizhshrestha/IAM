@@ -1,9 +1,9 @@
 package com.himalayas.schoolservice.controller;
 
-import com.himalayas.schoolservice.dto.response.SchoolResponseDto;
-import com.himalayas.schoolservice.mapper.SchoolMapper;
 import com.himalayas.securitycommons.annotation.CurrentUser;
 import com.himalayas.securitycommons.user.AuthenticatedUser;
+import com.himalayas.shareddomain.dto.response.SchoolResponseDto;
+import com.himalayas.shareddomain.mapper.SchoolMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
