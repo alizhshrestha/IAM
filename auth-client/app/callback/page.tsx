@@ -83,8 +83,8 @@ export default function CallbackPage() {
 
                 const matchingSchool = allSchools.find((s) => s.id === schoolId);
                 if (!matchingSchool) throw new Error("School not found for user");
-
-                setSelectedSchool({ ...matchingSchool, userId: appUserId });
+                console.log("Matching school: ", matchingSchool);
+                setSelectedSchool({ ...matchingSchool});
             } catch (err: any) {
                 setError(err.message);
             }
@@ -101,6 +101,7 @@ export default function CallbackPage() {
         localStorage.setItem("selected_school_id", selectedSchool.id);
         localStorage.setItem("selected_role", role);
         localStorage.setItem("user_id", selectedSchool.userId);
+        localStorage.setItem("tenant_id", selectedSchool.tenantId || "");
 
         router.push(`/schools/${selectedSchool.id}/${rolePath}`);
     };

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class CustomJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
   @Override
   public AbstractAuthenticationToken convert(Jwt jwt) {
+    System.out.println(jwt.getClaims());
     String username = jwt.getSubject();
     List<String> roles = jwt.getClaimAsStringList("roles");
     String tenantId = extractTenantId();

@@ -18,7 +18,7 @@
         </processorPath>
         <module name="school-service" />
       </profile>
-      <profile name="Annotation profile for shared-domain" enabled="true">
+      <profile name="Annotation profile for security-commons" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />

@@ -13,6 +13,7 @@ export interface Tenant {
 // }
 
 export interface ClassData {
+  subjectId: string;
   id: string;
   name: string;
   grade: string;
