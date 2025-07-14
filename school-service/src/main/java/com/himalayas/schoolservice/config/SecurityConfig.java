@@ -1,6 +1,5 @@
 package com.himalayas.schoolservice.config;
 
-import com.himalayas.schoolservice.context.UserContextCleanupFilter;
 import com.himalayas.securitycommons.config.CustomJwtAuthenticationConverter;
 import com.himalayas.securitycommons.tenant.JwtTenantValidator;
 import com.himalayas.shareddomain.entities.Tenant;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.context.SecurityContextHolderFilter;
 
 import java.text.ParseException;
 
@@ -28,7 +26,7 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http, CustomJwtAuthenticationConverter customJwtAuthenticationConverter, UserContextCleanupFilter userContextCleanupFilter) throws Exception {
+  public SecurityFilterChain filterChain(HttpSecurity http, CustomJwtAuthenticationConverter customJwtAuthenticationConverter) throws Exception {
     http
             .cors(Customizer.withDefaults())
 //            .csrf(AbstractHttpConfigurer::disable)
@@ -42,7 +40,8 @@ public class SecurityConfig {
                             .jwtAuthenticationConverter(customJwtAuthenticationConverter)
                     )
             )
-            .addFilterAfter(userContextCleanupFilter, SecurityContextHolderFilter.class);
+//            .addFilterAfter(userContextCleanupFilter, SecurityContextHolderFilter.class)
+    ;
 
     return http.build();
   }

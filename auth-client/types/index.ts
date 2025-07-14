@@ -36,6 +36,24 @@ export interface SchoolInfo {
   clients: ClientInfo[];
 }
 
+export interface TeacherScheduleResponseDto {
+  timeSlots: string[];
+  days: string[];
+  schedule: {
+    [timeSlot: string]: {
+      [dayOfWeek: string]: string;
+    };
+  };
+}
+
+export interface AssignmentData{
+  id: string;
+  title: string;
+  subject: string;
+  className: string;
+  dueDate: string;
+}
+
 export type School = {
   id: string;
   name: string;

@@ -77,6 +77,7 @@ public class RegisteredClientConverter {
                             .forEach(grants::add))
             .redirectUris(uris -> Arrays.stream(dto.getRedirectUris().split(",")).forEach(uris::add))
             .scopes(s -> Arrays.stream(dto.getScopes().split(",")).forEach(s::add))
+            .postLogoutRedirectUri("http://localhost:3000/login")
             .clientSettings(ClientSettings.withSettings(flattenedClientMap)
                     .requireProofKey(true)
                     .requireAuthorizationConsent(true)

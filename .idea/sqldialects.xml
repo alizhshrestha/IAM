@@ -5,7 +5,7 @@
     <file url="file://$PROJECT_DIR$/auth-server/src/main/java/com/himalayas/authserver/mapper/TenantAwareRegisteredClientMapper.java" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/school-service/src/main/java/com/himalayas/schoolservice/mapper/UserMapper.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/java/com/himalayas/shareddomain/mapper/SchoolMapper.java" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/shared-domain/src/main/java/com/himalayas/shareddomain/mapper/TeacherClassMapper.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/shared-domain/src/main/java/com/himalayas/shareddomain/mapper/TeacherMapper.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/java/com/himalayas/shareddomain/mapper/TenantMapper.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V1__init.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V2__seed_data.sql" dialect="GenericSQL" />
@@ -14,5 +14,6 @@
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V5__seed_data2.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V6__audit_columns_v2.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V7__audit_columns_v3.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/shared-domain/src/main/resources/db/migration/V8__create_class_schedule_and_populate_data.sql" dialect="MySQL" />
   </component>
 </project>
