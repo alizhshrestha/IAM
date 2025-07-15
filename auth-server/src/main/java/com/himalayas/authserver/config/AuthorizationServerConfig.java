@@ -2,11 +2,8 @@ package com.himalayas.authserver.config;
 
 import com.himalayas.authserver.filter.TenantFilter;
 import com.himalayas.authserver.mapper.TenantAwareRegisteredClientMapper;
-import com.himalayas.authserver.repository.TenantAwareClientRegistrationRepository;
 import com.himalayas.authserver.repository.TenantAwareRegisteredClientRepository;
 import com.himalayas.authserver.service.TenantAwareUserDetailsService;
-import com.himalayas.securitycommons.tenant.TenantContextHolder;
-import com.himalayas.securitycommons.user.UserContextHolder;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -25,8 +22,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
@@ -34,7 +29,6 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
@@ -49,7 +43,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthorizationServerConfig {
   private final TenantAwareUserDetailsService tenantAwareUserDetailsService;
-  private final TenantAwareClientRegistrationRepository clientRegistrationRepository;
   private final TenantFilter tenantFilter;
   private final String[] allowedOrigin = {
           "/oauth2/token",
@@ -118,26 +111,9 @@ public class AuthorizationServerConfig {
             ))
             .logout(logout -> logout
                     .logoutUrl("/logout")
-                    .logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository)));
+            );
 
     return http.build();
-  }
-
-
-  @Bean
-  public LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository) {
-    OidcClientInitiatedLogoutSuccessHandler handler =
-            new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-    handler.setPostLogoutRedirectUri("{baseUrl}/logout");
-    return (request, response, authentication) -> {
-      try {
-        handler.onLogoutSuccess(request, response, authentication);
-      } finally {
-        // Ensure cleanup even on logout endpoint
-        UserContextHolder.clear();
-        TenantContextHolder.clear();
-      }
-    };
   }
 
   @Bean
@@ -151,11 +127,6 @@ public class AuthorizationServerConfig {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-
-//  @Bean
-//  public UserDetailsService userDetailsService() {
-//    return tenantAwareUserDetailsService;
-//  }
 
   @Bean
   public JWKSource<SecurityContext> jwkSource() {

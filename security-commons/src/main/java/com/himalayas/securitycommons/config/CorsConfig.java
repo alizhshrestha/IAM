@@ -13,7 +13,7 @@ import java.util.List;
 public class CorsConfig {
 
   @Bean
-  public CorsFilter corsFilter(){
+  public CorsFilter corsFilter() {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
     config.setAllowedOrigins(List.of("http://localhost:3000"));
@@ -23,11 +23,6 @@ public class CorsConfig {
     config.addExposedHeader("Authorization");
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//    source.registerCorsConfiguration("/oauth2/**", config);
-//    source.registerCorsConfiguration("/public/api/**", config);
-//    source.registerCorsConfiguration("/login/**", config);       // Optional
-//    source.registerCorsConfiguration("/.well-known/**", config);
-//    source.registerCorsConfiguration("/api/**", config);
     source.registerCorsConfiguration("/**", config);
 
     return new CorsFilter(source);
