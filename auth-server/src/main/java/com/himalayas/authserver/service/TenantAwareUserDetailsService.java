@@ -1,6 +1,6 @@
 package com.himalayas.authserver.service;
 
-import com.himalayas.authserver.context.TenantContext;
+import com.himalayas.securitycommons.tenant.TenantContextHolder;
 import com.himalayas.shareddomain.entities.AppUser;
 import com.himalayas.shareddomain.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class TenantAwareUserDetailsService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    String tenantId = TenantContext.getCurrentTenant();
+    String tenantId = TenantContextHolder.getTenantId();
 
     Assert.notNull(tenantId, "Tenant ID must be set in the current context for user authentication.");
 

@@ -1,15 +1,14 @@
 package com.himalayas.authserver.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.himalayas.authserver.context.TenantContext;
 import com.himalayas.authserver.converter.RegisteredClientConverter;
 import com.himalayas.authserver.dto.RegisteredClientDto;
 import com.himalayas.authserver.mapper.TenantAwareRegisteredClientMapper;
+import com.himalayas.securitycommons.tenant.TenantContextHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -19,7 +18,7 @@ public class TenantAwareRegisteredClientRepository implements RegisteredClientRe
 
   @Override
   public void save(RegisteredClient registeredClient) {
-    String tenantId = TenantContext.getCurrentTenant();
+    String tenantId = TenantContextHolder.getTenantId();
     RegisteredClientDto entity;
     try {
       entity = RegisteredClientConverter.from(registeredClient, tenantId);
@@ -31,7 +30,7 @@ public class TenantAwareRegisteredClientRepository implements RegisteredClientRe
 
   @Override
   public RegisteredClient findById(String id) {
-    String tenantId = TenantContext.getCurrentTenant();
+    String tenantId = TenantContextHolder.getTenantId();
     RegisteredClientDto entity = mapper.findById(id, tenantId);
     try {
       return entity != null ? RegisteredClientConverter.toRegisteredClient(entity) : null;
@@ -42,7 +41,7 @@ public class TenantAwareRegisteredClientRepository implements RegisteredClientRe
 
   @Override
   public RegisteredClient findByClientId(String clientId) {
-    String tenantId = TenantContext.getCurrentTenant();
+    String tenantId = TenantContextHolder.getTenantId();
     log.info("Looking up clientId={} for tenantId={}", clientId, tenantId);
     RegisteredClientDto entity = mapper.findByClientId(clientId, tenantId);
     if (entity == null) {

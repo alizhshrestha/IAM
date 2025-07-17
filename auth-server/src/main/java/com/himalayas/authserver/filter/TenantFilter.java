@@ -1,6 +1,6 @@
 package com.himalayas.authserver.filter;
 
-import com.himalayas.authserver.context.TenantContext;
+import com.himalayas.securitycommons.tenant.TenantContextHolder;
 import com.himalayas.securitycommons.tenant.TenantRepository;
 import com.himalayas.shareddomain.entities.Tenant;
 import jakarta.servlet.Filter;
@@ -45,12 +45,12 @@ public class TenantFilter implements Filter{
     if (tenantIdentifier != null && !tenantIdentifier.isEmpty()) {
       Optional<Tenant> tenant = tenantRepository.findById(tenantIdentifier);
       if(tenant.isPresent()){
-        TenantContext.setCurrentTenant(tenant.get().getId());
+        TenantContextHolder.setTenant(tenant.get());
         log.debug("Tenant '{}' set in context for request to {}", tenant.get().getId(), serverName);
         try{
           filterChain.doFilter(servletRequest, servletResponse);
         }finally {
-          TenantContext.clear(); // Always clear the context
+          TenantContextHolder.clear(); // Always clear the context
           log.debug("Tenant context cleared.");
         }
         return;
