@@ -65,6 +65,26 @@ export type School = {
   userId: string;
 };
 
+export type AttendanceEntry = {
+  studentId: string;
+  studentName: string;
+  present: boolean;
+}
+
+export type AttendancePostPayload = {
+  id: string | null;
+  classId: string;
+  studentId: string;
+  date: string;
+  present: boolean;
+  recordedBy: string;
+  remarks: string;
+  tenantId: string;
+  schoolId: string;
+  createdBy: string;
+  updatedBy: string;
+};
+
 export const getRolePath = (role: string) => {
   switch (role) {
     case "ROLE_ADMIN":

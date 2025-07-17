@@ -32,3 +32,15 @@ body {
 .form-text-field{
   @apply w-full border px-4 py-2 rounded-md;
 }
+
+.react-calendar {
+  @apply w-full text-sm rounded-xl border border-[--color-border] bg-white;
+}
+
+.react-calendar__tile {
+  @apply py-2 rounded-md transition hover:bg-[--color-muted];
+}
+
+.react-calendar__tile--active {
+  @apply bg-[--color-primary] text-white rounded-full;
+}
