@@ -20,7 +20,7 @@ import java.util.Optional;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class TenantFilter implements Filter{
+public class TenantFilter implements Filter {
 
   private final TenantRepository tenantRepository;
 
@@ -44,17 +44,12 @@ public class TenantFilter implements Filter{
 
     if (tenantIdentifier != null && !tenantIdentifier.isEmpty()) {
       Optional<Tenant> tenant = tenantRepository.findById(tenantIdentifier);
-      if(tenant.isPresent()){
+      if (tenant.isPresent()) {
         TenantContextHolder.setTenant(tenant.get());
         log.debug("Tenant '{}' set in context for request to {}", tenant.get().getId(), serverName);
-        try{
-          filterChain.doFilter(servletRequest, servletResponse);
-        }finally {
-          TenantContextHolder.clear(); // Always clear the context
-          log.debug("Tenant context cleared.");
-        }
+        filterChain.doFilter(servletRequest, servletResponse);
         return;
-      }else {
+      } else {
         log.warn("Tenant with ID '{}' not found for serverName: {}", tenantIdentifier, serverName);
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid or unknown tenant.");
         return; // Stop processing and return error

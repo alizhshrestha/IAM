@@ -1,5 +1,6 @@
 package com.himalayas.authserver.config;
 
+import com.himalayas.authserver.filter.CustomClearingLogoutFilter;
 import com.himalayas.authserver.filter.TenantFilter;
 import com.himalayas.authserver.mapper.TenantAwareRegisteredClientMapper;
 import com.himalayas.authserver.repository.TenantAwareRegisteredClientRepository;
@@ -10,6 +11,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -29,6 +31,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
@@ -41,9 +44,11 @@ import java.util.UUID;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class AuthorizationServerConfig {
   private final TenantAwareUserDetailsService tenantAwareUserDetailsService;
   private final TenantFilter tenantFilter;
+  private final CustomClearingLogoutFilter logoutFilter;
   private final String[] allowedOrigin = {
           "/oauth2/token",
           "/.well-known/**",
@@ -66,10 +71,11 @@ public class AuthorizationServerConfig {
     http
             .cors(Customizer.withDefaults())
             .addFilterBefore(tenantFilter, SecurityContextHolderFilter.class)
+            .addFilterAfter(logoutFilter, LogoutFilter.class)
             .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
             .with(authorizationServerConfigurer, (authorizationServer) ->
                     authorizationServer
-                            .oidc(Customizer.withDefaults())    // Enable OpenID Connect 1.0
+                            .oidc(Customizer.withDefaults())// Enable OpenID Connect 1.0
             )
             .authorizeHttpRequests((authorize) ->
                     authorize
@@ -108,10 +114,7 @@ public class AuthorizationServerConfig {
             )
             .formLogin(form -> form.successHandler(
                     new SavedRequestAwareAuthenticationSuccessHandler()
-            ))
-            .logout(logout -> logout
-                    .logoutUrl("/logout")
-            );
+            ));
 
     return http.build();
   }
