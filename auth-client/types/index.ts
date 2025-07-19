@@ -1,3 +1,4 @@
+
 export interface Tenant {
   id: string;
   name: string;
@@ -52,6 +53,20 @@ export interface AssignmentData{
   subject: string;
   className: string;
   dueDate: string;
+}
+
+export interface ClassItem {
+  id: string;
+  name: string;
+  section: string;
+  grade: string;
+  schoolId: string;
+}
+
+export interface ClassTableProps {
+  classes: ClassItem[];
+  onSelectClass: (classItem : ClassItem) => void;
+  loading?: boolean;
 }
 
 export type School = {

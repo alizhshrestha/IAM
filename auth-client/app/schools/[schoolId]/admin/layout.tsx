@@ -1,20 +1,24 @@
 'use client';
 
-import { BookIcon, CalendarIcon, CreditCardIcon, LayoutDashboardIcon, SettingsIcon, UsersIcon } from "lucide-react";
+import { useSchool } from "@/context/SchoolContext";
+import { BookIcon, CalendarIcon, CreditCardIcon, GraduationCapIcon, LayoutDashboardIcon, SettingsIcon, UsersIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navItems = [
-    { icon: LayoutDashboardIcon, label: 'Dashboard', href: '/admin' },
-    { icon: UsersIcon, label: 'Users', href: '/admin/users' },
-    { icon: BookIcon, label: 'Courses', href: '/admin/courses' },
-    { icon: CalendarIcon, label: 'Attendance', href: '/admin/attendance' },
-    { icon: CreditCardIcon, label: 'Fees', href: '/admin/fees' },
-    { icon: SettingsIcon, label: 'Settings', href: '/admin/settings' },
-];
-
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const { schoolId } = useSchool();
+    const base = `/schools/${schoolId}/admin`;
+
+    const navItems = [
+        { icon: LayoutDashboardIcon, label: 'Dashboard', href: `${base}` },
+        { icon: UsersIcon, label: 'Users', href: `${base}/users` },
+        { icon: GraduationCapIcon, label: 'Classes', href: `${base}/classes` },
+        { icon: BookIcon, label: 'Courses', href: `${base}/courses` },
+        { icon: CalendarIcon, label: 'Attendance', href: `${base}/attendance` },
+        { icon: CreditCardIcon, label: 'Fees', href: `${base}/fees` },
+        { icon: SettingsIcon, label: 'Settings', href: `${base}/settings` },
+    ];
 
     return (
         <div className="flex min-h-screen bg-[var(--color-bg)] text-[var(--color-text-main)]">
@@ -27,8 +31,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             key={label}
                             href={href}
                             className={`flex items-center gap-3 px-4 py-2 rounded-md transition hover:bg-[var(--color-primary-light)] ${pathname === href
-                                    ? 'bg-[var(--color-primary-light)] text-[var(--color-primary)] font-semibold'
-                                    : 'text-[var(--color-text-main)]'
+                                ? 'bg-[var(--color-primary-light)] text-[var(--color-primary)] font-semibold'
+                                : 'text-[var(--color-text-main)]'
                                 }`}
                         >
                             <Icon className="w-5 h-5" />
